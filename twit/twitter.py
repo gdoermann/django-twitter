@@ -2853,6 +2853,27 @@ class Api(object):
         response.config(self.GetFollowers, page=page)
         return response
 
+    def GetAllFollowers(self):
+        '''Fetch the sequence of twitter.User instances, one for each follower
+
+        The twitter.Api instance must be authenticated.
+
+        Args:
+            page:
+                Specifies the page of results to retrieve.
+                Note: there are pagination limits. [Optional]
+
+        Returns:
+            A sequence of twitter.User instances, one for each follower
+        '''
+        followers = []
+        response = self.GetFollowers()
+        followers += response
+        while len(response):
+            response = response.next()
+            followers += response
+        return followers
+
     def GetFeatured(self):
         '''Fetch the sequence of twitter.User instances featured on twitter.com
 
