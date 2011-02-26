@@ -1,0 +1,21 @@
+*Overview*
+This app is built off of the python-twitter app found here: http://code.google.com/p/python-twitter/.
+It is meant as a simple wrapper for the api.  I have extended the python-twitter library to handle
+pagination and more calls needed for the models.
+
+*Api*
+The simplist use of this would be to just include the api app.  That would allow you to simply dump twitter information into your database.
+
+*Accounts*
+The accounts app has a user profile that includes information about twitter and will return the api to use
+for that user.
+
+*Analysis*
+This is really just here to help me with a project I am working on to link people interested in a given subject
+to a location.  Feel free to use it or throw it out... up to you.
+
+This django site should be fully functional if you just fill out the application_settings file (see example).
+
+Good luck!
+
+Greg

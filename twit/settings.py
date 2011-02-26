@@ -74,6 +74,8 @@ INSTALLED_APPS = (
     'south',
 )
 
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
 try:
     # Not required
     from local_settings import *
