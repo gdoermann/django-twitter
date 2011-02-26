@@ -3,6 +3,8 @@ This app is built off of the python-twitter app found here: http://code.google.c
 It is meant as a simple wrapper for the api.  I have extended the python-twitter library to handle
 pagination and more calls needed for the models.
 
+For this app to work you also need to install python-oauth2 (http://github.com/simplegeo/python-oauth2) as twitter uses this for all authentication.
+
 *Api*
 The simplist use of this would be to just include the api app.  That would allow you to simply dump twitter information into your database.
 
@@ -15,6 +17,10 @@ This is really just here to help me with a project I am working on to link peopl
 to a location.  Feel free to use it or throw it out... up to you.
 
 This django site should be fully functional if you just fill out the application_settings file (see example).
+
+Obviously you will need to create a twitter app and add it to your twitter account.  See this awsome tutorial for help:
+http://jeffmiller.github.com/2010/05/31/twitter-from-the-command-line-in-python-using-oauth
+(Yea, yea, the tutorial is for tweepy, but the same principles apply to python-twitter as well...)
 
 Good luck!
 
