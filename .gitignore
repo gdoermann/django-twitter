@@ -1,0 +1,6 @@
+.idea
+.svn
+*.pyc
+application_settings.py
+database.sqlite
+local_settings.py
