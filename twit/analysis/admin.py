@@ -1,5 +1,5 @@
 from django.contrib import admin
-from analysis.models import *
+from twit.analysis.models import *
 
 class UserOrListAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'object', 'member_count')

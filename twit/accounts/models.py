@@ -2,8 +2,8 @@ import datetime
 from django.conf import settings
 from django.db import models
 import twitter
-from api.models import User
-from util.models import TrackedModel
+from twit.api.models import User
+from twit.util.models import TrackedModel
 
 class UserProfile(TrackedModel):
     """ A user that can login to the program and into twitter """
@@ -22,7 +22,7 @@ class UserProfile(TrackedModel):
         try:
             assert self.account
         except Exception:
-            account = self.api().VerifyCredentials()
+            account = User.from_api(self.api().VerifyCredentials())
             account.save()
             self.account = account
         super(UserProfile, self).save(*args, **kwargs)

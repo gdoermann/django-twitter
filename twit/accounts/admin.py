@@ -1,5 +1,5 @@
 from django.contrib import admin
-from accounts import models
+from twit.accounts import models
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'screen_name', )

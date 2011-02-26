@@ -1,6 +1,16 @@
 from django.contrib import admin
-from api.models import *
-from util.models import TrackedModel
+from twit.api.models import *
+
+def get_friends(modeladmin, request, queryset):
+    account = request.user.get_profile().account
+    account.get_friends(request.api)
+get_friends.short_description = "Load Friends"
+
+def get_followers(modeladmin, request, queryset):
+    account = request.user.get_profile().account
+    account.get_followers(request.api)
+get_followers.short_description = "Load Followers"
+
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('screen_name', 'name', 'followers_count', 'friends_count', 'location')
@@ -20,6 +30,7 @@ class UserAdmin(admin.ModelAdmin):
                 )
                 }),
             )
+    actions = [get_friends]
     readonly_fields = ('created', 'modified')
 admin.site.register(User, UserAdmin)
 

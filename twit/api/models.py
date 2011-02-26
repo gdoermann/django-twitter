@@ -1,31 +1,43 @@
 import datetime
 from django.conf import settings
 from django.db import models
-import twitter
-from util.models import TrackedModel
+import twit.twitter
+from twit.util.models import TrackedModel
 
 class User(TrackedModel):
     id = models.IntegerField(primary_key=True, unique=True, editable=False, db_index=True)
     screen_name = models.SlugField(unique=True, max_length=30, db_index=True)
-    description = models.CharField(max_length=500, blank=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
     followers_count = models.PositiveIntegerField(default=0)
     friends_count = models.PositiveIntegerField(default=0)
-    location = models.CharField(max_length=50, blank=True)
-    name = models.CharField(max_length=255, blank=True, db_index=True)
-    background_color = models.CharField(max_length=10, blank=True)
-    background_img = models.URLField(max_length=255, blank=True)
+    location = models.CharField(max_length=50, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, db_index=True, null=True)
+    background_color = models.CharField(max_length=10, blank=True, null=True)
+    background_img = models.URLField(max_length=255, blank=True, null=True)
     protected = models.BooleanField(default=False)
-    url = models.URLField(max_length=255, blank=True)
-    tz = models.CharField(max_length=255, blank=True)
+    url = models.URLField(max_length=255, blank=True, null=True)
+    tz = models.CharField(max_length=255, blank=True, null=True)
     utc_offset = models.IntegerField(default=0)
 
     friends = models.ManyToManyField('api.User')
-
+    
     def get_friends(self, api):
         friends = api.GetAllFriends(user = self.screen_name)
+        flist = []
         for api_friend in friends:
             friend = User.from_api(api_friend)
             self.friends.add(friend)
+            flist.append(friend)
+        return flist
+
+    def get_followers(self, api):
+        friends = api.GetAllFollowers(user = self.screen_name)
+        flist = []
+        for api_friend in friends:
+            friend = User.from_api(api_friend)
+            self.friends.add(friend)
+            flist.append(friend)
+        return flist
 
     def refresh(self, api, commit=True, using=None):
         user = api.GetUser(self.screen_name)
@@ -68,10 +80,10 @@ class List(TrackedModel):
     id = models.IntegerField(primary_key=True, unique=True, editable=False, db_index=True)
     name = models.SlugField(unique=True, max_length=30, db_index=True)
     slug = models.SlugField(unique=True, max_length=30, db_index=True)
-    description = models.CharField(max_length=255, blank=True)
-    full_name = models.CharField(max_length=255)
-    mode = models.CharField(max_length=50)
-    uri = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    full_name = models.CharField(max_length=255, null=True)
+    mode = models.CharField(max_length=50, null=True)
+    uri = models.CharField(max_length=255, null=True)
     member_count = models.PositiveIntegerField(default=0)
     subscriber_count = models.PositiveIntegerField(default=0)
     following = models.BooleanField(default=False)
@@ -127,13 +139,13 @@ class Status(TrackedModel):
     user = models.ForeignKey('api.User', related_name='user_status_set')
     created_at = models.DateTimeField(null=True)
     favorited = models.BooleanField(default=False)
-    in_reply_to_screen_name = models.CharField(max_length=50, blank=True)
+    in_reply_to_screen_name = models.CharField(max_length=50, blank=True, null=True)
     in_reply_to_user_id = models.PositiveIntegerField(null=True)
     in_reply_to_status_id = models.PositiveIntegerField(null=True)
     truncated = models.BooleanField(default=False)
-    source = models.CharField(max_length=255)
+    source = models.CharField(max_length=255, null=True)
     text = models.CharField(max_length=200)
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, null=True)
     urls = models.ManyToManyField('api.Url')
     contributors = models.ManyToManyField('api.User', related_name='user_contributors_set')
 

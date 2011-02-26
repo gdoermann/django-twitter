@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.utils import IntegrityError
-from accounts.models import TrackedModel
+from twit.accounts.models import TrackedModel
 
 USER = 0
 LIST = 1
